@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-import os
+from __future__ import unicode_literals
 from distutils.core import setup
+import os
 
-__author__ = u'Ferran Pegueroles'
-__copyright__ = u'Copyright 2013, Ferran Pegueroles'
-__credits__ = [u'Ferran Pegueroles']
+__author__ = 'Ferran Pegueroles'
+__copyright__ = 'Copyright 2013, Ferran Pegueroles'
+__credits__ = ['Ferran Pegueroles']
 
 
 __license__ = 'GPL'
-__version__ = '0.3'
+__version__ = '0.4'
 __email__ = 'ferran@pegueroles.com'
 
 

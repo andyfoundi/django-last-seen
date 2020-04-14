@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import time
 import datetime
-from django.db import models
 from django.contrib.sites.models import Site
-from django.utils import timezone
 from django.core.cache import cache
+from django.db import models
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
-import settings
+from . import settings
 
 
 class LastSeenManager(models.Manager):
@@ -54,6 +58,7 @@ class LastSeenManager(models.Manager):
         return self.filter(**args).latest('last_seen').last_seen
 
 
+@python_2_unicode_compatible
 class LastSeen(models.Model):
     site = models.ForeignKey(Site)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -67,8 +72,8 @@ class LastSeen(models.Model):
         unique_together = (('user', 'site', 'module'),)
         ordering = ('-last_seen',)
 
-    def __unicode__(self):
-        return u"%s on %s" % (self.user, self.last_seen)
+    def __str__(self):
+        return "%s on %s" % (self.user, self.last_seen)
 
 
 def get_cache_key(site, module, user):

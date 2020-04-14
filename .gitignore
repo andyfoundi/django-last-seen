@@ -1,3 +1,7 @@
 *.pyc
 *.swp
 *.swo
+
+.coverage
+.tox
+htmlcov

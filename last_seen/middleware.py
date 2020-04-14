@@ -1,6 +1,7 @@
-
-
-from models import user_seen
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from .models import user_seen
 
 
 class LastSeenMiddleware(object):
