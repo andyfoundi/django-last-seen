@@ -70,3 +70,11 @@ LAST_SEEN_INTERVAL
     How often is the last seen timestamp updated to the
     database. The default is 2 hours.
 
+
+Development (using python3)
+=====
+
+```
+$ pip install tox
+$ tox
+```

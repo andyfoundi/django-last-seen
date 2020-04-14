@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 # Django settings for test_project project.
 
 DEBUG = True
@@ -29,7 +32,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
     'last_seen',
 )
 
@@ -45,3 +47,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'last_seen.middleware.LastSeenMiddleware',
 )
+
+
+SECRET_KEY = 'secret'

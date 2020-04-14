@@ -1,15 +1,23 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import datetime
-import mock
+import six
 import time
-from django.test import TestCase
+
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.cache import cache
+from django.core.cache.backends.locmem import LocMemCache
+from django.test import TestCase
 from django.utils import timezone
 
+from last_seen import middleware, settings
 from last_seen.models import LastSeen, user_seen, clear_interval
-from last_seen import settings
-from last_seen import middleware
+
+if six.PY2:
+    import mock
+else:
+    from unittest import mock
 
 
 class TestLastSeenModel(TestCase):
@@ -18,8 +26,8 @@ class TestLastSeenModel(TestCase):
         user = User(username='testuser')
         ts = datetime.datetime(2013, 1, 1, 2, 3, 4)
         seen = LastSeen(user=user, last_seen=ts)
-        self.assertIn('testuser', unicode(seen))
-        self.assertIn('2013-01-01 02:03:04', unicode(seen))
+        self.assertIn('testuser', six.text_type(seen))
+        self.assertIn('2013-01-01 02:03:04', six.text_type(seen))
 
 
 class TestLastSeenManager(TestCase):
@@ -77,8 +85,8 @@ class TestLastSeenManager(TestCase):
         ret = LastSeen.objects.seen(user=user)
 
         get_or_create.assert_called_with(user=user,
-                module=settings.LAST_SEEN_DEFAULT_MODULE,
-                site=Site.objects.get_current())
+            module=settings.LAST_SEEN_DEFAULT_MODULE,
+            site=Site.objects.get_current())
         self.assertTrue(lastseen.save.called)
         self.assertNotEqual(ret.last_seen, old_time)
 
@@ -188,7 +196,7 @@ class TestUserSeen(TestCase):
 class TestClearInterval(TestCase):
 
     @mock.patch('last_seen.models.LastSeen.objects.filter', autospec=True)
-    @mock.patch('last_seen.models.cache', autospec=True)
+    @mock.patch('last_seen.models.cache', spec=LocMemCache)
     def test_clear_interval(self, cache, filter):
         site = Site.objects.get_current()
         user = User(username='testuser', pk=1)
@@ -203,7 +211,7 @@ class TestClearInterval(TestCase):
         cache.set_many.assert_called_with(expected)
 
     @mock.patch('last_seen.models.LastSeen.objects.filter', autospec=True)
-    @mock.patch('last_seen.models.cache', autospec=True)
+    @mock.patch('last_seen.models.cache', spec=LocMemCache)
     def test_clear_interval_none(self, cache, filter):
         user = User(username='testuser', pk=1)
         filter.return_value = []
@@ -232,13 +240,13 @@ class TestMiddleware(TestCase):
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request(self, user_seen):
         request = mock.Mock()
-        request.user.is_authenticated.return_value = False
+        request.user.is_authenticated = False
         self.middleware.process_request(request)
         self.assertFalse(user_seen.called)
 
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request_auth(self, user_seen):
         request = mock.Mock()
-        request.user.is_authenticated.return_value = True
+        request.user.is_authenticated = True
         self.middleware.process_request(request)
         user_seen.assert_called_with(request.user)
