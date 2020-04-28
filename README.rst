@@ -72,9 +72,9 @@ LAST_SEEN_INTERVAL
 
 
 Development (using python3)
-=====
+===========================
 
-```
-$ pip install tox
-$ tox
-```
+To run tests::
+
+   $ pip install tox
+   $ tox
