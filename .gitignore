@@ -5,3 +5,7 @@
 .coverage
 .tox
 htmlcov
+
+# virtualenv
+env/
+venv/
