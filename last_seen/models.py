@@ -60,8 +60,9 @@ class LastSeenManager(models.Manager):
 
 @python_2_unicode_compatible
 class LastSeen(models.Model):
-    site = models.ForeignKey(Site)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     module = models.CharField(default=settings.LAST_SEEN_DEFAULT_MODULE,
                                 max_length=20)
     last_seen = models.DateTimeField(default=timezone.now)
