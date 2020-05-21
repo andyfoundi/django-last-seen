@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 # Django settings for test_project project.
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
     'default': {
@@ -37,7 +33,25 @@ INSTALLED_APPS = (
 
 STATIC_URL = "/static/"
 
-MIDDLEWARE_CLASSES = (
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'debug': DEBUG,
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.request',
+                'django.template.context_processors.static',
+            ],
+        }
+    },
+]
+
+MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

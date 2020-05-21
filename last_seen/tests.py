@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import datetime
-import six
 import time
 
 from django.contrib.auth.models import User
@@ -10,14 +7,10 @@ from django.core.cache import cache
 from django.core.cache.backends.locmem import LocMemCache
 from django.test import TestCase
 from django.utils import timezone
+from unittest import mock
 
 from last_seen import middleware, settings
 from last_seen.models import LastSeen, user_seen, clear_interval
-
-if six.PY2:
-    import mock
-else:
-    from unittest import mock
 
 
 class TestLastSeenModel(TestCase):
@@ -26,8 +19,8 @@ class TestLastSeenModel(TestCase):
         user = User(username='testuser')
         ts = datetime.datetime(2013, 1, 1, 2, 3, 4)
         seen = LastSeen(user=user, last_seen=ts)
-        self.assertIn('testuser', six.text_type(seen))
-        self.assertIn('2013-01-01 02:03:04', six.text_type(seen))
+        self.assertIn('testuser', str(seen))
+        self.assertIn('2013-01-01 02:03:04', str(seen))
 
 
 class TestLastSeenManager(TestCase):
@@ -235,18 +228,18 @@ class TestClearInterval(TestCase):
 
 class TestMiddleware(TestCase):
 
-    middleware = middleware.LastSeenMiddleware()
+    middleware = middleware.LastSeenMiddleware(mock.Mock())
 
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request(self, user_seen):
         request = mock.Mock()
         request.user.is_authenticated = False
-        self.middleware.process_request(request)
+        self.middleware(request)
         self.assertFalse(user_seen.called)
 
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request_auth(self, user_seen):
         request = mock.Mock()
         request.user.is_authenticated = True
-        self.middleware.process_request(request)
+        self.middleware(request)
         user_seen.assert_called_with(request.user)

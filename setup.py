@@ -26,10 +26,14 @@ setup(
     packages=['last_seen', 'last_seen.migrations'],
     description='Keep track of when a user has been last seen',
     long_description=long_description,
-    classifiers=['Development Status :: 5 - Production/Stable',
-                 'Environment :: Web Environment',
-                 'Framework :: Django',
-                 'Intended Audience :: Developers',
-                 'License :: OSI Approved :: GNU General Public License (GPL)',
-                 'Topic :: Internet :: WWW/HTTP :: Dynamic Content']
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ]
 )

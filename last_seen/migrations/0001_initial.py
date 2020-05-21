@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
-import django.utils.timezone
 from django.conf import settings
+from django.db import models, migrations
+import django.db.models.deletion
+import django.utils.timezone
 
 
 class Migration(migrations.Migration):
@@ -20,8 +18,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('module', models.CharField(default=b'default', max_length=20)),
                 ('last_seen', models.DateTimeField(default=django.utils.timezone.now)),
-                ('site', models.ForeignKey(to='sites.Site')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('site', models.ForeignKey(to='sites.Site', on_delete=django.db.models.deletion.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('-last_seen',),
