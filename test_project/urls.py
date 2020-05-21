@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from django.conf.urls import include, url
-from last_seen.models import clear_interval
+from django.conf.urls import url
 from django.shortcuts import redirect
+from last_seen.models import clear_interval
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -24,6 +22,6 @@ urlpatterns = (
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^clear/', clear),
 )

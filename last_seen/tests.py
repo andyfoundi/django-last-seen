@@ -228,18 +228,18 @@ class TestClearInterval(TestCase):
 
 class TestMiddleware(TestCase):
 
-    middleware = middleware.LastSeenMiddleware()
+    middleware = middleware.LastSeenMiddleware(mock.Mock())
 
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request(self, user_seen):
         request = mock.Mock()
         request.user.is_authenticated = False
-        self.middleware.process_request(request)
+        self.middleware(request)
         self.assertFalse(user_seen.called)
 
     @mock.patch('last_seen.middleware.user_seen', autospec=True)
     def test_process_request_auth(self, user_seen):
         request = mock.Mock()
         request.user.is_authenticated = True
-        self.middleware.process_request(request)
+        self.middleware(request)
         user_seen.assert_called_with(request.user)

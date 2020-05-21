@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from .models import user_seen
+from last_seen.models import user_seen
 
 
-class LastSeenMiddleware(object):
+class LastSeenMiddleware:
     """
         Middlewate to set timestampe when a user
         has been last seen
     """
-    def process_request(self, request):
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
         if request.user.is_authenticated:
             user_seen(request.user)
-
-        return None
+        response = self.get_response(request)
+        return response
